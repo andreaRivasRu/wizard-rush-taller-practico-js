@@ -29,10 +29,14 @@ function setCanvasSize() {
 function starGame() {
     game.font = `${elementsSize}px Verdana`;
 
+    const map = maps[0];
+    const mapRows = map.trim().split('\n');
+    const mapRowsCol = mapRows.map(row => row.trim().split(''));
+
     // Dibujar los elementos en el canvas
-    for (let i = 0; i < 10; i++) {
-        for (let z = 1; z < 11; z++) {
-            game.fillText(emojis['X'], elementsSize * i, elementsSize * z);
+    for (let col = 0; col < 10; col++) {
+        for (let row = 1; row < 11; row++) {
+            game.fillText(emojis[mapRowsCol[row - 1][col]], elementsSize * col, elementsSize * row);
         }
     }
 }

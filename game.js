@@ -11,11 +11,9 @@ window.addEventListener('resize', setCanvasSize);
 
 function setCanvasSize() {
     // Calcular el tamaño del canvas en función de las dimensiones de la ventana
-    if (window.innerHeight > window.innerWidth) {
-        canvasSize = window.innerWidth * 0.8;
-    } else {
-        canvasSize = window.innerHeight * 0.7;
-    }
+    window.innerHeight > window.innerWidth 
+        ? canvasSize = window.innerWidth * 0.8 
+        : canvasSize = window.innerHeight * 0.7;
 
     // Establecer el tamaño del canvas
     canvas.setAttribute('width', canvasSize);
@@ -29,14 +27,18 @@ function setCanvasSize() {
 function starGame() {
     game.font = `${elementsSize}px Verdana`;
 
+    // Crear arreglos bidimensionales 
     const map = maps[0];
     const mapRows = map.trim().split('\n');
-    const mapRowsCol = mapRows.map(row => row.trim().split(''));
+    const mapRowsColumn = mapRows.map(row => row.trim().split(''));
 
-    // Dibujar los elementos en el canvas
-    for (let col = 0; col < 10; col++) {
-        for (let row = 1; row < 11; row++) {
-            game.fillText(emojis[mapRowsCol[row - 1][col]], elementsSize * col, elementsSize * row);
-        }
-    }
+    // Renderizar el mapa
+    mapRowsColumn.forEach((row, rowIndex) => {
+        row.forEach((column, columnIndex) => {
+            const emoji = emojis[column];
+            const positionX = elementsSize * columnIndex;
+            const positionY = elementsSize * (rowIndex + 1);
+            game.fillText(emoji, positionX, positionY);
+        })
+    });
 }

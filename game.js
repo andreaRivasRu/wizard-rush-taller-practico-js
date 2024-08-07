@@ -71,18 +71,16 @@ function movePlayer() {
     game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
 }
 
-
-
 // Functions move character
 const move = (key) => {
     return() => {
-        if (key == 'up' && playerPosition.y > 0) {
+        if (key == 'up' && Math.floor(playerPosition.y > elementsSize)) {
             playerPosition.y -= elementsSize;
-        } else if (key == 'left' && playerPosition.x > 0) {
+        } else if (key == 'left' && Math.floor(playerPosition.x > elementsSize)) {
             playerPosition.x -= elementsSize;
-        } else if (key == 'right' && playerPosition.x < canvasSize) {
+        } else if (key == 'right' && Math.floor((playerPosition.x + elementsSize) < canvasSize)) {
             playerPosition.x += elementsSize;
-        } else if (key == 'down' && playerPosition.y < canvasSize) {
+        } else if (key == 'down' && Math.floor((playerPosition.y + elementsSize) < canvasSize)) {
             playerPosition.y += elementsSize;
         } 
     startGame();

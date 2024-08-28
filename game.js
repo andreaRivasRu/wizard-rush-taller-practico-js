@@ -5,11 +5,16 @@ const btnLeft = document.querySelector('#left');
 const btnRight = document.querySelector('#right');
 const btnDown = document.querySelector('#down');
 const livesCounter = document.querySelector('.lives');
+const timeCounter = document.querySelector('.time');
 
 let canvasSize;
 let elementsSize;
 let lvl = 0;
 let lives = 3;
+
+let timeStart;
+let timePlayer;
+let timeInterval;
 
 const playerPosition = {
   x: undefined,
@@ -52,6 +57,13 @@ function startGame() {
     return;
   }
 
+  timeCounter.innerHTML = '00:00';
+
+  if (!timeStart) {
+    timeStart = Date.now();
+    timeInterval = setInterval(showTime, 1000)
+  }
+
   const mapRows = map.trim().split('\n');
   const mapRowCols = mapRows.map(row => row.trim().split(''));
   console.log({map, mapRows, mapRowCols}); 
@@ -88,11 +100,25 @@ function startGame() {
   movePlayer();
 }
 
+function formatTime(ms) {
+  // convertir los milisegundos a segundos y minutos
+  const seg = parseInt(ms/1000) % 60;
+  const min = parseInt(ms/60000) % 60;
+
+  // asegurarse que los seg y min tengan 2 digitos siempre, rellenando los espacios con 0
+  const segStr = `${seg}`.padStart(2, '0');
+  const minStr = `${min}`.padStart(2, '0');
+
+  // retornar el tiempo con formato 00:00
+  return `${minStr}:${segStr}`;
+}
+
 function showLives() {
-  // const livesArray = Array(lives).fill(emojis['HEART']);
-  // console.log(livesArray.join(''));
-  
   livesCounter.innerHTML = emojis['HEART'].repeat(lives);
+}
+
+function showTime() {
+  timeCounter.innerHTML = formatTime(Date.now() - timeStart);
 }
 
 function movePlayer() {
@@ -130,6 +156,7 @@ function resetLvl() {
     if (lives === 0) {
         lvl = 0;
         lives = 3;
+        timeStart = undefined;
     }
     
     console.log(`Chocaste con un enemigo!`);
@@ -140,7 +167,7 @@ function resetLvl() {
 
 function gameWin() {
     console.log('Terminaste el juego');
-    
+    clearInterval(timeInterval);
 };
 
 window.addEventListener('keydown', moveByKeys);

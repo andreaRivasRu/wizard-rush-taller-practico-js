@@ -36,7 +36,7 @@ p {
     margin-top: 20px;
     padding-left: 15px;
     width: 80%;
-    max-width: 560px;
+    max-width: 495px;
 }
 
 canvas {
@@ -76,7 +76,7 @@ button:not(:last-child) {
     margin: 0 auto;
     padding: 8px;
     width: 80%;
-    max-width: 560px;
+    max-width: 495px;
 }
 
 p {

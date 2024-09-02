@@ -4,8 +4,10 @@ const btnUp = document.querySelector('#up');
 const btnLeft = document.querySelector('#left');
 const btnRight = document.querySelector('#right');
 const btnDown = document.querySelector('#down');
-const livesCounter = document.querySelector('.lives');
-const timeCounter = document.querySelector('.time');
+const livesSpan = document.querySelector('#lives');
+const timeSpan = document.querySelector('#time');
+const recordSpan = document.querySelector('#record');
+const pResult = document.querySelector('#result');
 
 let canvasSize;
 let elementsSize;
@@ -57,11 +59,12 @@ function startGame() {
     return;
   }
 
-  timeCounter.innerHTML = '00:00';
+  timeSpan.innerHTML = '00:00';
 
   if (!timeStart) {
     timeStart = Date.now();
-    timeInterval = setInterval(showTime, 1000)
+    timeInterval = setInterval(showTime, 1000);
+    showRecord();
   }
 
   const mapRows = map.trim().split('\n');
@@ -114,11 +117,15 @@ function formatTime(ms) {
 }
 
 function showLives() {
-  livesCounter.innerHTML = emojis['HEART'].repeat(lives);
+  livesSpan.innerHTML = emojis['HEART'].repeat(lives);
 }
 
 function showTime() {
-  timeCounter.innerHTML = formatTime(Date.now() - timeStart);
+  timeSpan.innerHTML = formatTime(Date.now() - timeStart);
+}
+
+function showRecord() {
+  recordSpan.innerHTML = localStorage.getItem('record_time');
 }
 
 function movePlayer() {
@@ -168,6 +175,20 @@ function resetLvl() {
 function gameWin() {
     console.log('Terminaste el juego');
     clearInterval(timeInterval);
+
+    const recordTime = localStorage.getItem('record_time');
+    const playerTime = Date.now() - timeStart;
+    
+    if (recordTime) {
+      if (recordTime > playerTime) {
+        localStorage.setItem('record_time', formatTime(playerTime));
+        pResult.innerHTML = 'Superaste tu record anterior!!';
+      } else {
+        pResult.innerHTML = 'No has superado tu record anterior, sigue intentando!';
+      }
+    } else {
+      localStorage.setItem('record_time', formatTime(playerTime));
+    }
 };
 
 window.addEventListener('keydown', moveByKeys);

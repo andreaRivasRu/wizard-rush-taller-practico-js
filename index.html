@@ -11,9 +11,10 @@
 </head>
 <body>
     <div class="game-container">
-        <div class="lives-container">
-            <p>Lives: <span class="lives"></span></p>
-            <p>Time: <span class="time"></span>⌛</p>
+        <div class="info-container">
+            <p>Lives: <span id="lives"></span></p>
+            <p>Time: <span id="time"></span>⌛</p>
+            <p>Record: <span id="record"></span>🏆</p>
         </div>
 
         <canvas id="game"></canvas>
@@ -27,6 +28,7 @@
 
         <div class="messages-container">
             <!-- TODO -->
+            <p id="result"></p>
             <p>Example paragraph</p>
         </div>
     </div>

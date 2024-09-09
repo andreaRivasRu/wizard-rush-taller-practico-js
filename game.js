@@ -1,3 +1,7 @@
+// Global variables
+const gameContainer = document.querySelector('.game-container');
+const loseFinalScreen = document.querySelector('.lose-game');
+const winFinalScreen = document.querySelector('.win-game');
 const canvas = document.querySelector('#game');
 const game = canvas.getContext('2d');
 const btnUp = document.querySelector('#up');
@@ -8,15 +12,20 @@ const livesSpan = document.querySelector('#lives');
 const timeSpan = document.querySelector('#time');
 const recordSpan = document.querySelector('#record');
 const pResult = document.querySelector('#result');
+const resultGame = document.querySelector('#result-game');
 
 let canvasSize;
 let elementsSize;
 let lvl = 0;
 let lives = 3;
-
 let timeStart;
 let timePlayer;
 let timeInterval;
+
+let explodedBombPosition = {
+  x: undefined,
+  y: undefined,
+};
 
 const playerPosition = {
   x: undefined,
@@ -26,16 +35,28 @@ const giftPosition = {
   x: undefined,
   y: undefined,
 };
-let enemyPositions = [];
+let bombPositions = [];
 
 window.addEventListener('load', setCanvasSize);
 window.addEventListener('resize', setCanvasSize);
 
+// Functions
 function setCanvasSize() {
+  windowWidth = window.innerWidth * 0.7;
+  windowHeight = window.innerHeight * 0.7;
+  
   if (window.innerHeight > window.innerWidth) {
-    canvasSize = window.innerWidth * 0.7;
+    if ((windowWidth % 10) !== 0) {
+      canvasSize = Math.ceil(windowWidth / 10) * 10;
+    } else {
+      canvasSize = windowWidth;
+    }
   } else {
-    canvasSize = window.innerHeight * 0.7;
+    if ((windowHeight % 10) !== 0) {
+      canvasSize = Math.ceil(windowHeight / 10) * 10;
+    } else {
+      canvasSize = windowHeight;
+    }
   }
   
   canvas.setAttribute('width', canvasSize);
@@ -43,12 +64,13 @@ function setCanvasSize() {
   
   elementsSize = canvasSize / 10;
 
+  playerPosition.x = undefined;
+  playerPosition.y = undefined;
   startGame();
 }
 
 function startGame() {
-  console.log({ canvasSize, elementsSize });
-
+  gameContainer.classList.remove('inactive');
   game.font = elementsSize + 'px Verdana';
   game.textAlign = 'end';
 
@@ -59,7 +81,9 @@ function startGame() {
     return;
   }
 
-  timeSpan.innerHTML = '00:00';
+  // if (timeSpan === '') {
+  //   timeSpan.innerHTML = '00:00';
+  // }
 
   if (!timeStart) {
     timeStart = Date.now();
@@ -67,12 +91,14 @@ function startGame() {
     showRecord();
   }
 
+  //renderizar mapa
   const mapRows = map.trim().split('\n');
   const mapRowCols = mapRows.map(row => row.trim().split(''));
-  console.log({map, mapRows, mapRowCols}); 
   
-  enemyPositions = [];
-  game.clearRect(0,0,canvasSize, canvasSize);
+  showLives();
+
+  bombPositions = [];
+  game.clearRect(0, 0, canvasSize, canvasSize);
 
   mapRowCols.forEach((row, rowI) => {
     row.forEach((col, colI) => {
@@ -90,7 +116,7 @@ function startGame() {
         giftPosition.x = posX;
         giftPosition.y = posY;
       } else if (col === 'X') {
-        enemyPositions.push({
+        bombPositions.push({
             x: posX,
             y: posY
         })
@@ -99,7 +125,7 @@ function startGame() {
       game.fillText(emoji, posX, posY);
     });
   });
-  showLives();
+  
   movePlayer();
 }
 
@@ -137,7 +163,7 @@ function movePlayer() {
     lvlUp();
   }
 
-  const enemyCollision = enemyPositions.find(enemy => {
+  const enemyCollision = bombPositions.find(enemy => {
     const enemyCollisionX = enemy.x.toFixed(2) == playerPosition.x.toFixed(2);
     const enemyCollisionY = enemy.y.toFixed(2) == playerPosition.y.toFixed(2);
     return enemyCollisionX && enemyCollisionY;
@@ -151,51 +177,66 @@ function movePlayer() {
 }
 
 function lvlUp() {
-    console.log('Subiste de nivel!');
     lvl++;
     startGame();
+    pResult.innerHTML = 'Well done, you leveled up!';
 };
 
 function resetLvl() {
     lives--;
-    console.log(lives);
-    
-    if (lives === 0) {
-        lvl = 0;
-        lives = 3;
-        timeStart = undefined;
-    }
-    
-    console.log(`Chocaste con un enemigo!`);
     playerPosition.x = undefined;
     playerPosition.y = undefined;
+    pResult.innerHTML = `You hit a bomb, you have ${lives} lives left.`
+
+    if (lives <= 0) {
+        lvl = 0;
+        lives = 3;
+        clearInterval(timeInterval);
+        timeStart = undefined;
+        loseFinalScreen.classList.remove('inactive');
+        gameContainer.classList.add('inactive');
+        return;
+    }
+    
     startGame();
 };
 
 function gameWin() {
     console.log('Terminaste el juego');
     clearInterval(timeInterval);
+    winFinalScreen.classList.remove('inactive');
+    gameContainer.classList.add('inactive');
 
     const recordTime = localStorage.getItem('record_time');
-    const playerTime = Date.now() - timeStart;
+    timePlayer = formatTime(Date.now() - timeStart);
+    console.log(timePlayer);
+    
     
     if (recordTime) {
-      if (recordTime > playerTime) {
-        localStorage.setItem('record_time', formatTime(playerTime));
-        pResult.innerHTML = 'Superaste tu record anterior!!';
+      if (recordTime > timePlayer) {
+        localStorage.setItem('record_time', timePlayer);
+        resultGame.innerHTML = `New record: ${timePlayer}`;
       } else {
-        pResult.innerHTML = 'No has superado tu record anterior, sigue intentando!';
+        resultGame.innerHTML = `You didn't beat your record`;
       }
     } else {
-      localStorage.setItem('record_time', formatTime(playerTime));
+      localStorage.setItem('record_time', timePlayer);
+      resultGame.innerHTML = `Record: ${timePlayer}`;
     }
+
+    console.log({recordTime, timePlayer});
 };
+
+function reload() {
+  location.reload();
+}
 
 window.addEventListener('keydown', moveByKeys);
 btnUp.addEventListener('click', moveUp);
 btnLeft.addEventListener('click', moveLeft);
 btnRight.addEventListener('click', moveRight);
 btnDown.addEventListener('click', moveDown);
+
 
 function moveByKeys(event) {
   if (event.key == 'ArrowUp') moveUp();

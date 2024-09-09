@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="game-container">
+    <div class="game-container inactive">
         <div class="info-container">
             <p>Lives: <span id="lives"></span></p>
             <p>Time: <span id="time"></span>⌛</p>
@@ -28,11 +28,22 @@
 
         <div class="messages-container">
             <!-- TODO -->
-            <p id="result"></p>
-            <p>Example paragraph</p>
+            <p id="result">...</p>
         </div>
     </div>
+    <div class="lose-game inactive">
+        <h2>Bummer, you lost the game!</h2>
+        <span class="emoji-span">😵</span>
+        <button class="main-button" onclick="reload()">Try again</button>
+    </div>
 
+    <div class="win-game inactive">
+        <h2>Great job, you won!</h2>
+        <span class="emoji-span">🥳</span>
+        <p id="result-game"></p>
+        <button class="main-button" id="button-time" onclick="reload()">Play again</button>
+    </div>
+    
     <script src="maps.js"></script>
     <script src="game.js"></script>
 </body>

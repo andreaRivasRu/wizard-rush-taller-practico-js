@@ -6,11 +6,30 @@
     <title>Bomb-Free Trail - Challenge the trail, reach the reward!</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="game-container inactive">
+    <section class="welcome-game">
+        <div class="welcome-game-container">
+            <h1 class="main-title">Wizard Adventures</h1>
+            <div>
+                <div class="info-start-game">
+                    <p>Hey adventurer!🎉<br>
+                        Grab diamonds to level up!💎<br>
+                        Dodge logs to stay alive!🌳<br>
+                        Beat your best times!⏱️<br>
+                        Ready, set, sparkle!🚀</p>
+                    <button class="main-button" id="start">Start Game</button>
+                </div>
+                <img src="/pictures/wizard-illustration.png" alt="A cartoon-style wizard stands against a purple background, wearing a tall pointed hat and long robe in matching purple hues. His flowing white beard and mustache dominate his face, with only his eyes visible. He holds a wooden staff in one hand and gestures with the other, as if explaining something. The character's expression and pose convey a friendly, approachable demeanor, making him appear wise yet affable. Golden accents on his hat and belt add a touch of mystical flair to his outfit.">
+            </div>
+        </div>
+    </section>
+    <section class="game-container inactive">
         <div class="info-container">
             <p>Lives: <span id="lives"></span></p>
             <p>Time: <span id="time"></span>⌛</p>
@@ -30,19 +49,19 @@
             <!-- TODO -->
             <p id="result">...</p>
         </div>
-    </div>
-    <div class="lose-game inactive">
-        <h2>Bummer, you lost the game!</h2>
-        <span class="emoji-span">😵</span>
+    </section>
+    <section class="lose-game inactive">
+        <h2 class="subtittle">Bummer, you lost the game!</h2>
+        <span class="emoji-span" id="lose-emoji"></span>
         <button class="main-button" onclick="reload()">Try again</button>
-    </div>
+    </section>
 
-    <div class="win-game inactive">
-        <h2>Great job, you won!</h2>
-        <span class="emoji-span">🥳</span>
+    <section class="win-game inactive">
+        <h2 class="subtittle">Great job, you won!</h2>
+        <span class="emoji-span" id="win-emoji"></span>
         <p id="result-game"></p>
         <button class="main-button" id="button-time" onclick="reload()">Play again</button>
-    </div>
+    </section>
     
     <script src="maps.js"></script>
     <script src="game.js"></script>

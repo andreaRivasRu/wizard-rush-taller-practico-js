@@ -1,5 +1,6 @@
 // Global variables
 const gameContainer = document.querySelector('.game-container');
+const welcomeGame = document.querySelector('.welcome-game');
 const loseFinalScreen = document.querySelector('.lose-game');
 const winFinalScreen = document.querySelector('.win-game');
 const canvas = document.querySelector('#game');
@@ -8,11 +9,14 @@ const btnUp = document.querySelector('#up');
 const btnLeft = document.querySelector('#left');
 const btnRight = document.querySelector('#right');
 const btnDown = document.querySelector('#down');
+const btnStart = document.querySelector('#start');
 const livesSpan = document.querySelector('#lives');
 const timeSpan = document.querySelector('#time');
 const recordSpan = document.querySelector('#record');
 const pResult = document.querySelector('#result');
 const resultGame = document.querySelector('#result-game');
+const winEmojiSpan = document.querySelector('#win-emoji');
+const loseEmojiSpan = document.querySelector('#lose-emoji');
 
 let canvasSize;
 let elementsSize;
@@ -37,12 +41,12 @@ const giftPosition = {
 };
 let bombPositions = [];
 
-window.addEventListener('load', setCanvasSize);
+btnStart.addEventListener('click', setCanvasSize);
 window.addEventListener('resize', setCanvasSize);
 
 // Functions
 function setCanvasSize() {
-  windowWidth = window.innerWidth * 0.7;
+  windowWidth = window.innerWidth * 0.8;
   windowHeight = window.innerHeight * 0.7;
   
   if (window.innerHeight > window.innerWidth) {
@@ -71,6 +75,7 @@ function setCanvasSize() {
 
 function startGame() {
   gameContainer.classList.remove('inactive');
+  welcomeGame.classList.add('inactive');
   game.font = elementsSize + 'px Verdana';
   game.textAlign = 'end';
 
@@ -80,10 +85,6 @@ function startGame() {
     gameWin();
     return;
   }
-
-  // if (timeSpan === '') {
-  //   timeSpan.innerHTML = '00:00';
-  // }
 
   if (!timeStart) {
     timeStart = Date.now();
@@ -155,8 +156,8 @@ function showRecord() {
 }
 
 function movePlayer() {
-  const giftCollisionX = playerPosition.x.toFixed(2) == giftPosition.x.toFixed(2);
-  const giftCollisionY = playerPosition.y.toFixed(2) == giftPosition.y.toFixed(2);
+  const giftCollisionX = playerPosition.x == giftPosition.x;
+  const giftCollisionY = playerPosition.y == giftPosition.y;
   const giftCollision = giftCollisionX && giftCollisionY;
   
   if (giftCollision) {
@@ -164,8 +165,8 @@ function movePlayer() {
   }
 
   const enemyCollision = bombPositions.find(enemy => {
-    const enemyCollisionX = enemy.x.toFixed(2) == playerPosition.x.toFixed(2);
-    const enemyCollisionY = enemy.y.toFixed(2) == playerPosition.y.toFixed(2);
+    const enemyCollisionX = enemy.x == playerPosition.x;
+    const enemyCollisionY = enemy.y == playerPosition.y;
     return enemyCollisionX && enemyCollisionY;
   })
 
@@ -195,6 +196,7 @@ function resetLvl() {
         timeStart = undefined;
         loseFinalScreen.classList.remove('inactive');
         gameContainer.classList.add('inactive');
+        loseEmojiSpan.innerHTML = `${emojis['GAME_OVER']}`;
         return;
     }
     
@@ -206,6 +208,7 @@ function gameWin() {
     clearInterval(timeInterval);
     winFinalScreen.classList.remove('inactive');
     gameContainer.classList.add('inactive');
+    winEmojiSpan.innerHTML = `${emojis['WIN']}`;
 
     const recordTime = localStorage.getItem('record_time');
     timePlayer = formatTime(Date.now() - timeStart);
@@ -223,7 +226,6 @@ function gameWin() {
       localStorage.setItem('record_time', timePlayer);
       resultGame.innerHTML = `Record: ${timePlayer}`;
     }
-
     console.log({recordTime, timePlayer});
 };
 

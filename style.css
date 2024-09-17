@@ -91,7 +91,7 @@ button {
     justify-content: center;
 }
 
-.welcome-game-container div img {
+.welcome-game-container div a {
     width: 50%;
 }
 

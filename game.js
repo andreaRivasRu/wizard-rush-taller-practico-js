@@ -13,6 +13,8 @@ const btnStart = document.querySelector('#start');
 const livesSpan = document.querySelector('#lives');
 const timeSpan = document.querySelector('#time');
 const recordSpan = document.querySelector('#record');
+const timeResume = document.querySelector('#time-resume');
+const recordResume = document.querySelector('#record-resume');
 const pResult = document.querySelector('#result');
 const resultGame = document.querySelector('#result-game');
 const winEmojiSpan = document.querySelector('#win-emoji');
@@ -179,8 +181,8 @@ function movePlayer() {
 
 function lvlUp() {
     lvl++;
-    startGame();
     pResult.innerHTML = 'Well done, you leveled up!';
+    startGame();
 };
 
 function resetLvl() {
@@ -226,7 +228,8 @@ function gameWin() {
       localStorage.setItem('record_time', timePlayer);
       resultGame.innerHTML = `Record: ${timePlayer}`;
     }
-    console.log({recordTime, timePlayer});
+    timeResume.innerHTML = `${timePlayer}`;
+    recordResume.innerHTML = `${recordTime}`;
 };
 
 function reload() {

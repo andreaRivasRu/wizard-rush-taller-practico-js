@@ -25,6 +25,7 @@ body {
     background-color: var(--green-background);
     color: var(--sm);
     font-family: "Courier Prime", monospace;
+    overflow-x: hidden;
 }
 
 p {
@@ -54,17 +55,6 @@ button {
     box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
 }
 
-.game-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: start;
-    flex-wrap: nowrap;
-    height: 100vh;
-    width: 100vw;
-    row-gap: 2rem;
-}
-
 .welcome-game {
     display: flex;
     flex-direction: column;
@@ -84,6 +74,7 @@ button {
 
 .welcome-game-container .main-title {
     color: var(--primary-color);
+    text-shadow: 2px 2px 2px var(--white);
     font-family: "Cinzel", system-ui;
     font-optical-sizing: auto;
     font-size: 6.4rem;
@@ -116,6 +107,17 @@ button {
     background-color: var(--light-grayish-yellow);
     border-radius: .8rem;
     box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    flex-wrap: nowrap;
+    height: 100vh;
+    width: 100vw;
+    row-gap: 2rem;
 }
 
 .info-container {
@@ -172,6 +174,11 @@ button:not(:last-child) {
     min-height: 6rem;
 }
 
+.messages-container #result {
+    color: var(--white);
+    padding: 1rem;
+}
+
 .subtitle {
     max-width: 50rem;
 }
@@ -198,6 +205,34 @@ button:not(:last-child) {
 
 .emoji-span {
     font-size: 8rem;
+}
+
+.info-resume-container {
+    background-color: var(--light-grayish-yellow);
+    display: flex;
+    padding: 2rem;
+    border-radius: 1.2rem;
+    border: .4rem solid var(--accent-yellow);
+}
+
+.info-resume-container div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.info-resume-container div:nth-child(1) {
+    border-right: 1px solid var(--black);
+    padding-right: 1rem;
+}
+
+.info-resume-container div:nth-child(2) {
+    padding-left: 1rem;
+}
+
+.info-resume-container div h3 {
+    font-size: 32px;
 }
 
 .inactive {

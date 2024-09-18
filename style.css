@@ -89,6 +89,7 @@ button {
     flex-flow: row wrap;
     align-items: center;
     justify-content: center;
+    gap: 2rem;
 }
 
 .info-start-game {
@@ -107,8 +108,15 @@ button {
 }
 
 .image-start-game {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
     flex-basis: fit-content;
     flex-grow: 2;
+}
+
+#main-image-wizard {
+    max-width: 400px;
 }
 
 .game-container {

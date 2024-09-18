@@ -83,7 +83,7 @@ button {
     text-align: center;
 }
 
-.welcome-game-container div {
+.welcome-game-container .content-container {
     margin-top: 2rem;
     display: flex;
     flex-flow: row wrap;
@@ -96,8 +96,7 @@ button {
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    flex-basis: fit-content;
-    flex-grow: 1;
+    width: fit-content;
 }
 
 .info-start-game p {
@@ -111,8 +110,7 @@ button {
     margin: 0 auto;
     display: flex;
     justify-content: center;
-    flex-basis: fit-content;
-    flex-grow: 2;
+    width: fit-content;
 }
 
 #main-image-wizard {
@@ -247,28 +245,6 @@ button:not(:last-child) {
 
 .inactive {
     display: none;
-}
-
-
-
-@media (max-width: 70rem) {
-    .welcome-game {
-        width: 100vw;
-    }
-
-    .welcome-game-container {
-        width: 80%;
-    }
-
-    .welcome-game-container div {
-        margin: 0 auto;
-        margin-top: 2rem;
-        width: fit-content;
-    }
-
-    .welcome-game-container div img {
-        width: 60%;
-    }
 }
 
 @media (max-width: 47rem) {

@@ -50,7 +50,6 @@ button {
     font-family: inherit;
     margin: 0;
     padding: 1rem 2rem;
-    width: 12rem;
     cursor: pointer;
     box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
 }
@@ -145,26 +144,33 @@ canvas {
 }
 
 .buttons-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1rem;
+    grid-template-rows: repeat(2, 1fr);
     justify-content: center;
-    flex-wrap: wrap;
     margin: 0 auto;
-    width: 100%;
+    width: fit-content;
+}
+
+#up {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+#left, #down, #right {
+    grid-row: 2;
 }
 
 .main-button {
     font-size: var(--lg);
     font-weight:40rem;
     padding: 10px 30px;
-    width: auto;
+    width: 100%;
 }
 
 .main-button:active {
     background-color: #9b69b0;
-}
-
-button:not(:last-child) {
-    margin-right: 1rem;
 }
 
 .messages-container {
@@ -250,16 +256,6 @@ button:not(:last-child) {
 @media (max-width: 47rem) {
     p, button {
         font-size: var(--sm);
-    }
-    
-    .buttons-container {
-        gap: 1rem;
-    }
-
-    #up,
-    #down {
-        margin-left: 100%;
-        margin-right: 100%;
     }
 
     .welcome-game-container {

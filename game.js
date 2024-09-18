@@ -241,7 +241,13 @@ btnUp.addEventListener('click', moveUp);
 btnLeft.addEventListener('click', moveLeft);
 btnRight.addEventListener('click', moveRight);
 btnDown.addEventListener('click', moveDown);
+window.addEventListener('keydown', startByEnter);
 
+function startByEnter(event) {
+  if(!welcomeGame.classList.contains('inactive') && event.key === 'Enter') {
+    btnStart.click();
+  };
+}
 
 function moveByKeys(event) {
   if (event.key == 'ArrowUp') moveUp();

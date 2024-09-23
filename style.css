@@ -173,7 +173,7 @@ canvas {
     background-color: #9b69b0;
 }
 
-.messages-container {
+/* .messages-container {
     background-color: var(--black);
     display: flex;
     flex-wrap: wrap;
@@ -191,7 +191,7 @@ canvas {
 .messages-container #result {
     color: var(--white);
     padding: 1rem;
-}
+} */
 
 .subtitle {
     max-width: 50rem;

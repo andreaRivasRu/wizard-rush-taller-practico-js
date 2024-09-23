@@ -163,6 +163,8 @@ function movePlayer() {
   const giftCollisionY = playerPosition.y == giftPosition.y;
   const giftCollision = giftCollisionX && giftCollisionY;
   
+  game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
+
   if (giftCollision) {
     showMessageInCanvas(`Well done, you leveled up! 🥳`);
     setTimeout(lvlUp, 2000);
@@ -178,8 +180,6 @@ function movePlayer() {
     showMessageInCanvas(`You hit a log 😰, you have ${lives} lives left.`);
     setTimeout(resetLvl, 3000);
   }
-  
-  game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
 }
 
 function lvlUp() {

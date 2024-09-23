@@ -166,8 +166,8 @@ function movePlayer() {
   game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
 
   if (giftCollision) {
-    showMessageInCanvas(`Well done, you leveled up! 🥳`);
-    setTimeout(lvlUp, 2000);
+    lvlUp();
+    
   }
 
   const enemyCollision = bombPositions.find(enemy => {
@@ -177,36 +177,42 @@ function movePlayer() {
   })
 
   if (enemyCollision) {
-    showMessageInCanvas(`You hit a log 😰, you have ${lives} lives left.`);
-    setTimeout(resetLvl, 3000);
+    resetLvl();
   }
 }
 
 function lvlUp() {
     lvl++;
-    // pResult.innerHTML = 'Well done, you leveled up!';
-    startGame();
+    if (!maps[lvl]) {
+      startGame();
+      return;
+    }
+    showMessageInCanvas(`Well done, you leveled up! 🥳`);
+    setTimeout(startGame, 800);
 };
 
 function resetLvl() {
     lives--;
-    playerPosition.x = undefined;
-    playerPosition.y = undefined;
-    
-    // pResult.innerHTML = `You hit a bomb, you have ${lives} lives left.`
-
     if (lives <= 0) {
-        lvl = 0;
-        lives = 3;
-        clearInterval(timeInterval);
-        timeStart = undefined;
-        loseFinalScreen.classList.remove('inactive');
-        gameContainer.classList.add('inactive');
-        loseEmojiSpan.innerHTML = `${emojis['GAME_OVER']}`;
-        return;
+      lvl = 0;
+      lives = 3;
+      clearInterval(timeInterval);
+      timeStart = undefined;
+      loseFinalScreen.classList.remove('inactive');
+      gameContainer.classList.add('inactive');
+      loseEmojiSpan.innerHTML = `${emojis['GAME_OVER']}`;
+      return;
     }
+
+    showMessageInCanvas(`You hit a log 😰, you have ${lives} lives left.`);
+
+    setTimeout(()=> {
+      playerPosition.x = undefined;
+      playerPosition.y = undefined;
+  
+      startGame();
+    }, 3000)
     
-    startGame();
 };
 
 function showMessageInCanvas(message) {

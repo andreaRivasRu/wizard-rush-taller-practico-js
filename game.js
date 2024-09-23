@@ -28,10 +28,7 @@ let timeStart;
 let timePlayer;
 let timeInterval;
 
-let explodedBombPosition = {
-  x: undefined,
-  y: undefined,
-};
+let deadPosition = {};
 
 const playerPosition = {
   x: undefined,
@@ -101,7 +98,7 @@ function startGame() {
   showLives();
 
   bombPositions = [];
-  game.clearRect(0, 0, canvasSize, canvasSize);
+  clearMap();
 
   mapRowCols.forEach((row, rowI) => {
     row.forEach((col, colI) => {
@@ -130,6 +127,10 @@ function startGame() {
   });
   
   movePlayer();
+}
+
+function clearMap() {
+  game.clearRect(0, 0, canvasSize, canvasSize);
 }
 
 function formatTime(ms) {
@@ -163,7 +164,8 @@ function movePlayer() {
   const giftCollision = giftCollisionX && giftCollisionY;
   
   if (giftCollision) {
-    lvlUp();
+    showMessageInCanvas(`Well done, you leveled up! 🥳`);
+    setTimeout(lvlUp, 2000);
   }
 
   const enemyCollision = bombPositions.find(enemy => {
@@ -173,7 +175,8 @@ function movePlayer() {
   })
 
   if (enemyCollision) {
-    resetLvl();
+    showMessageInCanvas(`You hit a log 😰, you have ${lives} lives left.`);
+    setTimeout(resetLvl, 3000);
   }
   
   game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
@@ -181,7 +184,7 @@ function movePlayer() {
 
 function lvlUp() {
     lvl++;
-    pResult.innerHTML = 'Well done, you leveled up!';
+    // pResult.innerHTML = 'Well done, you leveled up!';
     startGame();
 };
 
@@ -189,7 +192,8 @@ function resetLvl() {
     lives--;
     playerPosition.x = undefined;
     playerPosition.y = undefined;
-    pResult.innerHTML = `You hit a bomb, you have ${lives} lives left.`
+    
+    // pResult.innerHTML = `You hit a bomb, you have ${lives} lives left.`
 
     if (lives <= 0) {
         lvl = 0;
@@ -204,6 +208,19 @@ function resetLvl() {
     
     startGame();
 };
+
+function showMessageInCanvas(message) {
+  const fontSize = elementsSize / 3;
+  game.globalAlpha = 0.8;
+  game.fillStyle = 'black';
+  game.fillRect(0, 0, canvas.width, canvas.height);
+
+  game.globalAlpha = 1.0;
+  game.fillStyle = 'white';
+  game.font = fontSize + 'px Courier Prime';
+  game.textAlign = 'center';
+  game.fillText(message, canvasSize / 2, canvasSize / 2);
+}
 
 function gameWin() {
     console.log('Terminaste el juego');
@@ -241,14 +258,16 @@ btnUp.addEventListener('click', moveUp);
 btnLeft.addEventListener('click', moveLeft);
 btnRight.addEventListener('click', moveRight);
 btnDown.addEventListener('click', moveDown);
-window.addEventListener('keydown', startByEnter);
+window.addEventListener('keydown', startGameByKey);
 
-function startByEnter(event) {
-  if(!welcomeGame.classList.contains('inactive') && event.key === 'Enter') {
-    btnStart.click();
+function startGameByKey(event) {
+  if(!welcomeGame.classList.contains('inactive')) {
+    if (event.code === 'Enter' || event.code === 'Space') {
+      btnStart.click();
+    }   
   };
+  console.log(event);
 }
-
 function moveByKeys(event) {
   if (event.key == 'ArrowUp') moveUp();
   else if (event.key == 'ArrowLeft') moveLeft();
